@@ -1,0 +1,32 @@
+<!--
+  Shared header component.
+  To reuse on a new specialty page: copy this whole block right after <body>,
+  update the nav links' href targets to match that page's section ids,
+  and keep the logo/WhatsApp number/"back to main site" link as-is.
+  Requires: css/tokens.css, css/base.css, css/components.css, js/components.js
+-->
+<header class="site-header" id="siteHeader">
+  <div class="wrap header-inner">
+    <a href="/" class="brand">
+      <img class="brand-icon" src="assets/images/logo-icon.png" alt="" width="36" height="36">
+      <span class="brand-text">Digital Medical Center<small>زراعة الأسنان الرقمية</small></span>
+    </a>
+
+    <nav class="main-nav" id="mainNav">
+      <ul>
+        <li><a href="#service">الخدمة</a></li>
+        <li><a href="#clinic">العيادة</a></li>
+      </ul>
+    </nav>
+
+    <a href="https://digitalmedicalcenter-ae.com/" target="_blank" rel="noopener" class="btn-mainsite">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 11.5 12 4l8 7.5M6 10v9h5v-5h2v5h5v-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      الموقع الرئيسي
+    </a>
+    <a href="https://wa.me/971509594655" class="btn btn-primary btn-sm nav-cta">احجز استشارتك</a>
+
+    <button class="nav-toggle" id="navToggle" aria-label="فتح القائمة" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>

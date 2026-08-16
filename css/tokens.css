@@ -1,0 +1,53 @@
+/*
+  Design tokens — shared across ALL specialty landing pages (implant, dermatology, ortho...).
+  Derived from the "Meditics" medical template reference: deep navy panels,
+  bright blue accent, light content sections, pill buttons.
+  Do not duplicate these values in page-specific CSS — reference the variables.
+*/
+:root{
+  /* Core palette */
+  --navy-deep:   #071429;
+  --navy:        #0B1D3A;
+  --navy-soft:   #122a52;
+  --blue:        #2F7FF5;
+  --blue-strong: #1D63D0; /* WCAG AA-safe for white text on blue (buttons, badges) */
+  --blue-light:  #5B9DFB;
+  --camel:       #E8A87C; /* warm light-orange/camel accent — used sparingly against the navy/blue base */
+  --camel-rgb:   232,168,124;
+  --camel-strong:#A85A26; /* WCAG AA-safe camel for small text/icons on light backgrounds */
+  --bg-light:    #F3F6FB;
+  --white:       #FFFFFF;
+  --ink:         #10233F;
+  --ink-soft:    #66738C;
+  --line-soft:   rgba(16,35,63,.08);
+  --line-on-navy:rgba(255,255,255,.14);
+
+  /* WhatsApp brand (float button only) */
+  --wa-green: #25D366;
+
+  /* Typography */
+  --font-display: 'Cairo', sans-serif;
+  --font-body: 'Cairo', sans-serif;
+
+  /* Radii */
+  --r-sm: 12px;
+  --r-md: 20px;
+  --r-lg: 28px;
+  --r-pill: 100px;
+
+  /* Shadows */
+  --shadow-card: 0 4px 20px rgba(11,29,58,.07);
+  --shadow-card-hover: 0 20px 40px rgba(11,29,58,.14);
+  --shadow-btn: 0 10px 26px rgba(47,127,245,.38);
+  --shadow-navy-panel: 0 30px 60px -20px rgba(7,20,41,.5);
+
+  /* Layout */
+  --container: 1180px;
+  --section-pad: 100px;
+}
+
+@media (max-width: 640px){
+  :root{
+    --section-pad: 64px;
+  }
+}

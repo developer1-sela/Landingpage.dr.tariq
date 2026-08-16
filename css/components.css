@@ -1,0 +1,150 @@
+/*
+  Shared components — reused verbatim on every specialty landing page.
+  Markup source of truth lives in /components/*.html — copy that markup
+  into a new page, link this stylesheet, and it matches automatically.
+*/
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-weight:700;font-size:14.5px;border-radius:var(--r-pill);
+  padding:15px 30px;transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.btn-sm{padding:11px 22px;font-size:13.5px;}
+.btn-primary{background:var(--blue-strong);color:#fff;box-shadow:var(--shadow-btn);}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(47,127,245,.5);}
+.btn-outline{border:2px solid var(--line-on-navy);color:#fff;padding:13px 26px;}
+.btn-outline:hover{background:rgba(255,255,255,.08);}
+.btn-ghost{border:2px solid var(--line-soft);color:var(--ink);padding:13px 26px;}
+.btn-ghost:hover{background:var(--bg-light);}
+
+/* ---------- Header ---------- */
+.site-header{position:fixed;inset:0 0 auto 0;z-index:100;padding:20px 0;transition:all .35s ease;}
+.site-header.scrolled{background:rgba(255,255,255,.92);backdrop-filter:blur(10px);padding:12px 0;box-shadow:0 4px 20px rgba(11,29,58,.08);}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;}
+
+.brand{display:flex;align-items:center;gap:10px;}
+.brand-icon{width:36px;height:36px;object-fit:contain;flex-shrink:0;}
+.brand-text{font-family:var(--font-display);font-size:18px;font-weight:800;color:#fff;line-height:1.2;transition:color .35s ease;}
+.site-header.scrolled .brand-text{color:var(--navy);}
+.brand-text small{display:block;font-family:var(--font-body);font-size:11px;color:rgba(255,255,255,.65);font-weight:500;transition:color .35s ease;}
+.site-header.scrolled .brand-text small{color:var(--ink-soft);}
+
+.main-nav ul{display:flex;gap:32px;font-weight:600;font-size:14.5px;}
+.main-nav a{position:relative;padding:4px 0;color:#fff;transition:color .35s ease;}
+.main-nav a::after{content:"";position:absolute;bottom:0;right:0;width:0;height:2px;background:var(--blue-light);transition:width .3s;}
+.main-nav a:hover::after{width:100%;}
+@media(min-width:901px){
+  .site-header.scrolled .main-nav a{color:var(--ink);}
+}
+
+/* "Back to main site" — deliberately not a pill/blue like the booking CTA, so it reads as a different kind of action */
+.btn-mainsite{display:inline-flex;align-items:center;gap:8px;background:rgba(var(--camel-rgb),.14);
+  border:1.5px solid var(--camel);color:#fff;padding:10px 20px;border-radius:10px;
+  font-weight:700;font-size:14px;transition:background .25s ease,color .25s ease,transform .25s ease;}
+.btn-mainsite:hover{background:var(--camel-strong);border-color:var(--camel-strong);color:#fff;transform:translateY(-2px);}
+.site-header.scrolled .btn-mainsite{color:var(--camel-strong);border-color:var(--camel-strong);background:rgba(var(--camel-rgb),.1);}
+.site-header.scrolled .btn-mainsite:hover{background:var(--camel-strong);color:#fff;}
+@media(max-width:900px){.btn-mainsite{display:none;}}
+
+.nav-toggle{display:none;flex-direction:column;gap:5px;width:32px;padding:6px;}
+.nav-toggle span{display:block;width:100%;height:2px;background:#fff;border-radius:2px;transition:transform .3s,opacity .3s,background .35s ease;}
+.site-header.scrolled .nav-toggle span{background:var(--navy);}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0;}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+@media(max-width:900px){
+  .main-nav{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--navy);
+    display:flex;align-items:center;justify-content:center;
+    transform:translateY(-100%);transition:transform .35s ease;z-index:99;}
+  .main-nav.open{transform:translateY(0);}
+  .main-nav ul{flex-direction:column;text-align:center;gap:26px;font-size:20px;}
+  .nav-cta{display:none;}
+  .nav-toggle{display:flex;}
+}
+
+/* ---------- Dark navy panel (hero / doctor / CTA / testimonial) ---------- */
+.navy-panel{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-deep) 100%);color:#fff;position:relative;overflow:hidden;}
+.navy-panel .section-tag{color:var(--blue-light);}
+.navy-panel .section-tag::before{background:var(--blue-light);}
+.navy-panel h2{color:#fff;}
+.navy-panel .sub,
+.navy-panel p{color:rgba(255,255,255,.72);}
+/* Scattered outline circles + a couple of solid dots — subtle background texture for navy panels */
+.shapes{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1;}
+.shapes span{position:absolute;border-radius:50%;border:2px solid transparent;animation:ringDrift 12s ease-in-out infinite;}
+.shapes span:nth-child(1){width:150px;height:150px;top:10%;left:5%;border-color:rgba(91,157,251,.4);animation-duration:14s;}
+.shapes span:nth-child(2){width:96px;height:96px;bottom:14%;right:8%;border-color:rgba(var(--camel-rgb),.5);animation-duration:11s;animation-delay:-2.5s;}
+.shapes span:nth-child(3){width:52px;height:52px;top:32%;right:20%;border-color:rgba(255,255,255,.32);animation-duration:9s;animation-delay:-4s;}
+.shapes span:nth-child(4){width:220px;height:220px;bottom:-8%;left:14%;border-color:rgba(var(--camel-rgb),.3);animation-duration:16s;}
+.shapes span:nth-child(5){width:14px;height:14px;top:56%;left:40%;background:rgba(var(--camel-rgb),.65);border:none;animation-duration:8s;animation-delay:-1s;}
+.shapes span:nth-child(6){width:9px;height:9px;top:20%;right:38%;background:rgba(255,255,255,.6);border:none;animation-duration:7s;animation-delay:-3s;}
+.shapes span:nth-child(7){width:120px;height:120px;top:4%;right:32%;border-color:rgba(91,157,251,.34);animation-duration:13s;animation-delay:-5s;}
+.shapes span:nth-child(8){width:64px;height:64px;bottom:6%;left:30%;border-color:rgba(255,255,255,.3);animation-duration:10s;animation-delay:-2s;}
+.shapes span:nth-child(9){width:180px;height:180px;top:44%;right:-4%;border-color:rgba(var(--camel-rgb),.32);animation-duration:15s;animation-delay:-6s;}
+.shapes span:nth-child(10){width:11px;height:11px;top:14%;left:26%;background:rgba(91,157,251,.65);border:none;animation-duration:9s;animation-delay:-4.5s;}
+.shapes span:nth-child(11){width:80px;height:80px;bottom:26%;right:44%;border-color:rgba(255,255,255,.28);animation-duration:12s;animation-delay:-1.5s;}
+.shapes span:nth-child(12){width:7px;height:7px;top:66%;right:16%;background:rgba(var(--camel-rgb),.7);border:none;animation-duration:8.5s;animation-delay:-3.5s;}
+@keyframes ringDrift{0%,100%{transform:translate(0,0) rotate(0deg);}50%{transform:translate(14px,-18px) rotate(10deg);}}
+@media (prefers-reduced-motion: reduce){.shapes span{animation:none;}}
+
+/* Drifting decorative blobs — place inside any position:relative panel, size/position per instance */
+.blob{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:1;animation:blobDrift 9s ease-in-out infinite;}
+@keyframes blobDrift{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(24px,-26px) scale(1.1);}}
+@media (prefers-reduced-motion: reduce){.blob{animation:none;}}
+
+/* ---------- Cards ---------- */
+.card{background:var(--white);border-radius:var(--r-md);padding:32px 26px;box-shadow:var(--shadow-card);transition:transform .35s ease, box-shadow .35s ease;}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow-card-hover);}
+.card-icon{width:52px;height:52px;border-radius:15px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;background:linear-gradient(135deg,var(--blue),var(--blue-light));color:#fff;flex-shrink:0;}
+.card h3{font-size:18.5px;margin-bottom:9px;}
+.card p{color:var(--ink-soft);font-size:14px;line-height:1.8;}
+
+.badge-pill{display:inline-flex;align-items:center;gap:9px;background:var(--white);padding:9px 16px;border-radius:var(--r-pill);font-size:13px;font-weight:600;color:var(--ink);box-shadow:var(--shadow-card);}
+.badge-pill .star{color:var(--camel-strong);}
+
+/* ---------- Photo card w/ floating badges (hero + doctor sections) ---------- */
+.photo-card{position:relative;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-navy-panel);}
+.photo-card img{width:100%;height:100%;object-fit:cover;}
+.photo-badge{position:absolute;bottom:-20px;right:-14px;background:var(--white);padding:16px 20px;border-radius:18px;box-shadow:0 20px 40px rgba(7,20,41,.25);display:flex;align-items:center;gap:12px;max-width:230px;animation:floatY 4s ease-in-out infinite;}
+.photo-badge .ic{width:38px;height:38px;border-radius:12px;background:var(--blue);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;}
+.photo-badge .txt{font-size:12.5px;color:var(--ink-soft);font-weight:600;line-height:1.5;}
+.photo-badge .txt b{color:var(--ink);display:block;font-size:14px;}
+.photo-tag{position:absolute;top:-16px;left:-12px;background:var(--blue-strong);color:#fff;padding:10px 16px;border-radius:14px;font-size:12px;font-weight:700;box-shadow:0 10px 24px rgba(47,127,245,.45);display:flex;align-items:center;gap:6px;}
+
+/* ---------- Footer ---------- */
+.site-footer{background:var(--navy-deep);color:#F3F6FB;padding:56px 0 26px;}
+.footer-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:36px;margin-bottom:36px;}
+.site-footer .brand-text{color:#fff;}
+.site-footer .brand-text small{color:rgba(255,255,255,.55);}
+.footer-links{display:flex;gap:56px;flex-wrap:wrap;}
+.footer-links h3{font-size:13px;color:var(--blue-light);margin-bottom:14px;font-weight:700;}
+.footer-links li{margin-bottom:9px;font-size:13.5px;opacity:.75;}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.12);padding-top:22px;font-size:12.5px;opacity:.6;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+
+.footer-social{display:flex;gap:10px;margin-top:16px;}
+.footer-social a{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;color:#fff;transition:background .25s ease,transform .25s ease;}
+.footer-social a:hover{background:var(--blue-strong);transform:translateY(-2px);}
+
+/* ---------- Compact testimonial quote (reused wherever a short review fits) ---------- */
+.mini-quote{margin-top:20px;padding-right:16px;border-right:2px solid var(--blue-light);}
+.mini-quote p{color:rgba(255,255,255,.82);font-size:14px;line-height:1.7;font-style:italic;margin-bottom:6px;}
+.mini-quote cite{color:var(--blue-light);font-size:12px;font-style:normal;font-weight:600;}
+
+/* ---------- FAQ accordion (native <details>, no JS needed) ---------- */
+.faq-block{margin-top:56px;max-width:720px;position:relative;z-index:2;}
+.faq-item{border-bottom:1px solid var(--line-on-navy);padding:16px 0;}
+.faq-item summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:700;font-size:15px;color:#fff;}
+.faq-item summary::-webkit-details-marker{display:none;}
+.faq-item summary::after{content:"+";font-size:20px;line-height:1;color:var(--blue-light);flex-shrink:0;transition:transform .25s ease;}
+.faq-item[open] summary::after{transform:rotate(45deg);}
+.faq-item p{color:rgba(255,255,255,.72);font-size:14px;line-height:1.8;margin-top:10px;}
+
+/* ---------- WhatsApp float ---------- */
+.wa-float{position:fixed;bottom:26px;left:26px;width:58px;height:58px;background:var(--wa-green);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 12px 28px rgba(37,211,102,.45);z-index:90;
+  animation:floatY 3.5s ease-in-out infinite;}
+.wa-ring{position:absolute;inset:0;border-radius:50%;border:2px solid var(--wa-green);animation:waPulse 2.2s ease-out infinite;}
+@keyframes waPulse{0%{transform:scale(1);opacity:.6;}100%{transform:scale(1.7);opacity:0;}}
+@media (prefers-reduced-motion: reduce){.wa-ring{animation:none;display:none;}}

@@ -1,0 +1,49 @@
+/* Base reset + typography — shared across all specialty pages */
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg-light);
+  color:var(--ink);
+  font-family:var(--font-body);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:700;line-height:1.3;}
+a{text-decoration:none;color:inherit;}
+ul{list-style:none;}
+img{max-width:100%;display:block;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+svg{display:block;}
+
+.wrap{max-width:var(--container);margin:0 auto;padding:0 24px;}
+@media(min-width:640px){.wrap{padding:0 32px;}}
+
+.section{padding:var(--section-pad) 0;}
+.section-tag{
+  color:var(--blue-strong);font-weight:700;font-size:13px;letter-spacing:.3px;
+  margin-bottom:14px;display:flex;align-items:center;gap:8px;
+}
+.section-tag::before{content:"";width:24px;height:2px;background:var(--blue);}
+.section h2{font-size:clamp(26px,4vw,38px);margin-bottom:18px;max-width:640px;}
+.section .sub{color:var(--ink-soft);font-size:16.5px;max-width:580px;line-height:1.85;}
+
+/* Scroll-reveal utility (see js/components.js) */
+[data-reveal]{opacity:0;transform:translateY(28px);transition:opacity .7s ease, transform .7s ease;}
+[data-reveal][data-reveal-dir="right"]{transform:translateX(48px);}
+[data-reveal][data-reveal-dir="left"]{transform:translateX(-48px);}
+[data-reveal].in-view{opacity:1;transform:none;}
+
+@keyframes riseIn{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+@keyframes floatY{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+@keyframes pulseDot{0%,100%{opacity:1;}50%{opacity:.35;}}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+    scroll-behavior:auto !important;
+  }
+  [data-reveal]{opacity:1;transform:none;}
+}
