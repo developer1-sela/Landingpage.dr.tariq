@@ -109,7 +109,11 @@
     var photo = document.querySelector('.hero-photo-card');
     var target = document.getElementById('targetWord');
     if (!tooth || !hero || !photo || !target) return;
-    if (window.innerWidth < 900) return;
+
+    var landed = false;
+    var idleAnim = null;
+    var baseImpactX = null;
+    var baseRestTop = null;
 
     function place() {
       var heroRect = hero.getBoundingClientRect();
@@ -127,6 +131,8 @@
       var landY = (targetRect.top - heroRect.top) - th * 0.7;
 
       tooth.style.left = (impactX - tw / 2) + 'px';
+      baseImpactX = impactX;
+      baseRestTop = restTop;
 
       // .hero has overflow:hidden — clamp the fall so it never starts above the
       // section's own top edge (which would clip the start of the drop invisibly).
@@ -205,13 +211,46 @@
     }
 
     function startIdleBob(dx, dy) {
+      landed = true;
+      if (reducedMotion) { tooth.style.transform = 'translate(' + dx + 'px,' + dy + 'px)'; return; }
       if (!tooth.animate) return;
-      tooth.animate([
+      idleAnim = tooth.animate([
         { transform: 'translate(' + dx + 'px,' + dy + 'px) rotate(8deg) scale(0.85,0.85)' },
         { transform: 'translate(' + dx + 'px,' + (dy - 10) + 'px) rotate(4deg) scale(0.85,0.85)' },
         { transform: 'translate(' + dx + 'px,' + dy + 'px) rotate(8deg) scale(0.85,0.85)' }
       ], { duration: 3200, iterations: Infinity, easing: 'ease-in-out' });
     }
+
+    // The word the tooth lands on gets re-translated on language switch, which
+    // shifts its position — smoothly slide the (already landed) tooth to match.
+    function retarget() {
+      if (!landed || baseImpactX === null) return;
+      // #targetWord is inside the h1, which data-i18n-html replaces wholesale on
+      // every language switch — that swap creates a brand-new node, so the
+      // original `target` reference above would be stale/detached. Re-query it.
+      var freshTarget = document.getElementById('targetWord');
+      if (!freshTarget) return;
+      var heroRect = hero.getBoundingClientRect();
+      var targetRect = freshTarget.getBoundingClientRect();
+      var th = tooth.offsetHeight || 64;
+      var landX = (targetRect.left + targetRect.width / 2) - heroRect.left;
+      var landY = (targetRect.top - heroRect.top) - th * 0.7;
+      var dx = landX - baseImpactX;
+      var dy = landY - baseRestTop;
+
+      if (idleAnim) idleAnim.cancel();
+      if (reducedMotion || !tooth.animate) {
+        tooth.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+        landed = true;
+        return;
+      }
+      var move = tooth.animate([
+        { transform: tooth.style.transform || 'translate(0px,0px)' },
+        { transform: 'translate(' + dx + 'px,' + dy + 'px) rotate(8deg) scale(0.85,0.85)' }
+      ], { duration: 500, easing: 'ease-in-out', fill: 'forwards' });
+      move.onfinish = function () { startIdleBob(dx, dy); };
+    }
+    document.addEventListener('dmc:langchange', retarget);
 
     function run() {
       var delta = place();
@@ -220,6 +259,7 @@
       if (reducedMotion) {
         tooth.style.top = delta.restTop + 'px';
         tooth.style.transform = 'translate(' + delta.dx + 'px,' + delta.dy + 'px)';
+        landed = true;
         return;
       }
 

@@ -4,6 +4,12 @@
   update the nav links' href targets to match that page's section ids,
   and keep the logo/WhatsApp number/"back to main site" link as-is.
   Requires: css/tokens.css, css/base.css, css/components.css, js/components.js
+
+  Bilingual (AR/EN): the .lang-toggle button below only works if the page also
+  loads an i18n.js defining window.I18N (see this page's i18n.js for the
+  pattern) and tags translatable text with data-i18n / data-i18n-html /
+  data-i18n-attr — those attributes are page-specific and not included here,
+  add them to match the new page's own dictionary keys.
 -->
 <header class="site-header" id="siteHeader">
   <div class="wrap header-inner">
@@ -21,12 +27,14 @@
 
     <a href="https://digitalmedicalcenter-ae.com/" target="_blank" rel="noopener" class="btn-mainsite">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 11.5 12 4l8 7.5M6 10v9h5v-5h2v5h5v-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      الموقع الرئيسي
+      <span>الموقع الرئيسي</span>
     </a>
     <a href="https://wa.me/971509594655" class="btn btn-primary btn-sm nav-cta">احجز استشارتك</a>
-
-    <button class="nav-toggle" id="navToggle" aria-label="فتح القائمة" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="header-end-group">
+      <button class="lang-toggle" id="langToggle">EN</button>
+      <button class="nav-toggle" id="navToggle" aria-label="فتح القائمة" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>

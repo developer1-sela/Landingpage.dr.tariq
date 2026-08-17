@@ -5,7 +5,6 @@
   pointer-events:none;opacity:0;left:0;top:0;
   filter:drop-shadow(0 14px 20px rgba(7,20,41,.45));}
 #targetWord{position:relative;}
-@media(max-width:900px){.tooth-fly{display:none;}}
 
 /* ---------- Hero background video (looping clinic footage) ---------- */
 .hero-video{position:absolute;inset:0;z-index:0;width:100%;height:100%;
