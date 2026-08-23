@@ -33,11 +33,13 @@
 
 .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:riseIn .8s ease forwards .55s;}
 
-.hero-stats{display:flex;gap:28px;margin-top:34px;opacity:0;animation:riseIn .8s ease forwards .7s;}
+.hero-stats{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:34px;opacity:0;animation:riseIn .8s ease forwards .7s;}
 .hero-stats div{border-right:2px solid rgba(255,255,255,.14);padding-right:20px;}
 .hero-stats div:first-child{padding-right:0;border:none;}
 .hero-stats .n{font-family:var(--font-display);font-size:26px;font-weight:800;color:var(--blue-light);}
 .hero-stats .l{font-size:12px;color:rgba(255,255,255,.65);font-weight:500;}
+.hero-ig-link{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid var(--line-on-navy);padding:9px 16px;border-radius:var(--r-pill);color:#fff;font-weight:700;font-size:14px;}
+.hero-ig-link svg{flex-shrink:0;}
 
 .hero-visual{position:relative;z-index:2;opacity:0;animation:riseIn 1s ease forwards .35s;perspective:1000px;}
 .hero-photo-card{aspect-ratio:4/5;transition:transform .15s ease-out;transform-style:preserve-3d;}
