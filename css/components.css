@@ -18,6 +18,11 @@
 .btn-ghost{border:2px solid var(--line-soft);color:var(--ink);padding:13px 26px;}
 .btn-ghost:hover{background:var(--bg-light);}
 
+/* ---------- Keyboard focus ---------- */
+a:focus-visible, button:focus-visible, summary:focus-visible{
+  outline:2px solid var(--blue-light);outline-offset:3px;border-radius:4px;
+}
+
 /* ---------- Header ---------- */
 .site-header{position:fixed;inset:0 0 auto 0;z-index:100;padding:20px 0;transition:all .35s ease;}
 .site-header.scrolled{background:rgba(255,255,255,.92);backdrop-filter:blur(10px);padding:12px 0;box-shadow:0 4px 20px rgba(11,29,58,.08);}
@@ -49,7 +54,7 @@
 @media(max-width:900px){.btn-mainsite{display:none;}}
 
 /* AR/EN switch — stays visible at every width, including the collapsed mobile bar */
-.lang-toggle{flex-shrink:0;width:42px;height:34px;border-radius:8px;
+.lang-toggle{flex-shrink:0;width:44px;height:44px;border-radius:10px;
   border:1.5px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);color:#fff;
   font-family:var(--font-display);font-weight:700;font-size:12.5px;
   transition:background .25s ease,color .25s ease,border-color .25s ease;}
