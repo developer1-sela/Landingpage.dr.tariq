@@ -49,19 +49,55 @@ var CLARITY_ID         = '';
   /* ---- WhatsApp links ---- */
 
   var WA_SELECTOR = 'a[href*="wa.me"]';
+  var SOURCE_KEY = 'dmc_traffic_source';
 
-  /** utm_source from the page URL, reduced to [a-zA-Z0-9_-], max 20 chars. */
+  /* The pre-filled message, by page language. The source is appended. */
+  var WA_MESSAGE = {
+    ar: 'مرحباً، أرغب بالاستفسار عن زراعة الأسنان',
+    en: "Hello, I'd like to ask about dental implants"
+  };
+
+  /**
+   * Where this visit came from, in order: utm_source (reduced to
+   * [a-zA-Z0-9_-], max 20 chars), then an ad click id (gclid/gbraid/wbraid
+   * → google, fbclid → facebook, ttclid → tiktok), then whatever an earlier
+   * page of this visit detected, then "web". A detected source is kept in
+   * sessionStorage so it survives moving between pages.
+   */
   function trafficSource() {
-    var raw = '';
-    try { raw = new URLSearchParams(window.location.search).get('utm_source') || ''; } catch (e) {}
-    var clean = raw.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 20);
-    return clean || 'web';
+    var params;
+    try { params = new URLSearchParams(window.location.search); } catch (e) { params = null; }
+    var has = function (k) { return !!(params && params.get(k)); };
+
+    var detected = '';
+    if (params) {
+      detected = (params.get('utm_source') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 20);
+    }
+    if (!detected) {
+      if (has('gclid') || has('gbraid') || has('wbraid')) detected = 'google';
+      else if (has('fbclid')) detected = 'facebook';
+      else if (has('ttclid')) detected = 'tiktok';
+    }
+
+    if (detected) {
+      try { sessionStorage.setItem(SOURCE_KEY, detected); } catch (e) {}
+      return detected;
+    }
+    var stored = '';
+    try { stored = sessionStorage.getItem(SOURCE_KEY) || ''; } catch (e) {}
+    return stored.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 20) || 'web';
+  }
+
+  function currentMessage(source) {
+    var lang = (document.documentElement.lang || 'ar').slice(0, 2).toLowerCase();
+    return (WA_MESSAGE[lang] || WA_MESSAGE.ar) + ' (' + source + ')';
   }
 
   /**
-   * Appends " (source)" to the link's text param, or sets "(source)" when
-   * the link has no text yet. Encoded with encodeURIComponent, so a space is
-   * %20 rather than "+", which WhatsApp would show literally.
+   * Sets the link's text param to the message for the current language plus
+   * " (source)", replacing any earlier one; other params are kept. Encoded
+   * with encodeURIComponent, so a space is %20 rather than "+", which
+   * WhatsApp would show literally.
    */
   function tagLink(a, source) {
     var href = a.getAttribute('href') || '';
@@ -73,21 +109,14 @@ var CLARITY_ID         = '';
     var base = qAt >= 0 ? href.slice(0, qAt) : href;
     var pairs = qAt >= 0 && href.length > qAt + 1 ? href.slice(qAt + 1).split('&') : [];
 
-    var text = '';
     var others = [];
     for (var i = 0; i < pairs.length; i++) {
       var eq = pairs[i].indexOf('=');
       var key = eq >= 0 ? pairs[i].slice(0, eq) : pairs[i];
-      if (key === 'text') {
-        var val = eq >= 0 ? pairs[i].slice(eq + 1) : '';
-        try { text = decodeURIComponent(val.replace(/\+/g, ' ')); } catch (e) { text = val; }
-      } else {
-        others.push(pairs[i]);
-      }
+      if (key !== 'text') others.push(pairs[i]);
     }
 
-    var tagged = text ? text + ' (' + source + ')' : '(' + source + ')';
-    others.push('text=' + encodeURIComponent(tagged));
+    others.push('text=' + encodeURIComponent(currentMessage(source)));
     a.setAttribute('href', base + '?' + others.join('&') + hash);
   }
 
@@ -101,6 +130,9 @@ var CLARITY_ID         = '';
   function onWhatsAppClick(event) {
     var a = event.target && event.target.closest ? event.target.closest(WA_SELECTOR) : null;
     if (!a) return;
+
+    /* built at click time, so it follows the language switcher */
+    tagLink(a, source);
 
     var eventId = newEventId();
     var url = a.href;
@@ -139,10 +171,18 @@ var CLARITY_ID         = '';
     setTimeout(go, 1000);
   }
 
-  function init() {
-    var source = trafficSource();
+  var source = 'web';
+
+  /* also kept current on the links themselves, for long-press / copy link */
+  function tagAll() {
     var links = document.querySelectorAll(WA_SELECTOR);
     for (var i = 0; i < links.length; i++) tagLink(links[i], source);
+  }
+
+  function init() {
+    source = trafficSource();
+    tagAll();
+    document.addEventListener('dmc:langchange', tagAll);
     document.addEventListener('click', onWhatsAppClick);
   }
 
